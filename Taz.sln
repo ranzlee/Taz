@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taz", "Taz\Taz.csproj", "{C0A0FFBC-C0C5-4F8A-8A67-8AF35FCB5915}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taz.Tests.ORM", "Taz.Tests.ORM\Taz.Tests.ORM.csproj", "{DEA0F06C-1240-4590-81C2-BF80672D7CC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0A0FFBC-C0C5-4F8A-8A67-8AF35FCB5915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0A0FFBC-C0C5-4F8A-8A67-8AF35FCB5915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0A0FFBC-C0C5-4F8A-8A67-8AF35FCB5915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0A0FFBC-C0C5-4F8A-8A67-8AF35FCB5915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEA0F06C-1240-4590-81C2-BF80672D7CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEA0F06C-1240-4590-81C2-BF80672D7CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEA0F06C-1240-4590-81C2-BF80672D7CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEA0F06C-1240-4590-81C2-BF80672D7CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
