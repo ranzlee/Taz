@@ -11,6 +11,7 @@ import { HomeComponent } from './app/components/home/home.component';
 import { CounterComponent } from './app/components/counter/counter.component';
 import { FetchDataComponent } from './app/components/fetch-data/fetch-data.component';
 import { FakeEntityListComponent } from './app/components/fake-entity/fake-entity-list/fake-entity-list.component';
+import { FakeEntityGroupComponent } from './app/components/fake-entity/fake-entity-group/fake-entity-group.component';
 import { FakeEntityDetailComponent } from './app/components/fake-entity/fake-entity-detail/fake-entity-detail.component';
 import { LoginComponent } from './app/components/account/login/login.component';
 
@@ -26,6 +27,7 @@ import { HttpService } from './app/services/http/http.service';
     CounterComponent,
     FetchDataComponent,
     FakeEntityListComponent,
+    FakeEntityGroupComponent,
     FakeEntityDetailComponent,
     LoginComponent
   ],

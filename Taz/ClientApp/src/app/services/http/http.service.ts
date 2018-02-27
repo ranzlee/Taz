@@ -23,4 +23,13 @@ export class HttpService {
       error => console.error(error)
     );
   }
+
+  post<T>(api: string, payload: T, callback: (result: T) => void): void {
+    this.http.post<T>(this.environmentService.baseUrl + api, payload).subscribe(
+      result => {
+        callback(result);
+      },
+      error => console.error(error)
+    );
+  }
 }

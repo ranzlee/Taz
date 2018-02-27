@@ -7,7 +7,6 @@ import { HttpService } from '../../services/http/http.service';
 })
 export class FetchDataComponent {
   public forecasts: WeatherForecast[];
-  public fakeEntities: Taz.Domain.IFakeEntity[];
 
   constructor(@Inject(HttpService) httpService: HttpService) {
     httpService.get<WeatherForecast[]>(
