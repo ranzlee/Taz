@@ -1,3 +1,15 @@
-<p>
-  fake-entity-detail works!
-</p>
+<tr>
+  <td>
+    <button title="show" (click)="toggleGroup()">{{ isGroupExpanded ? '-' : '+' }}</button>
+  </td>
+  <td>{{ fakeEntity.id }}</td>
+  <td>{{ fakeEntity.parentId }}</td>
+  <td>{{ fakeEntity.rootId }}</td>
+  <td>{{ fakeEntity.name }}</td>
+  <td></td>
+</tr>
+<tr *ngIf="isGroupExpanded">
+  <td colspan="6">
+    <app-fake-entity-group [parent]="fakeEntity"></app-fake-entity-group>
+  </td>
+</tr>

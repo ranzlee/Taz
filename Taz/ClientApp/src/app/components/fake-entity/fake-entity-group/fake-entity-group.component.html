@@ -14,9 +14,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody>
-
-      </tbody>
+      <tbody app-fake-entity-detail *ngFor="let fakeEntity of fakeEntities" [fakeEntity]="fakeEntity"></tbody>
     </table>
   </div>
 </div>
