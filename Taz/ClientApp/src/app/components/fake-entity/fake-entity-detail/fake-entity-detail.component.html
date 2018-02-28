@@ -5,7 +5,19 @@
   <td>{{ fakeEntity.id }}</td>
   <td>{{ fakeEntity.parentId }}</td>
   <td>{{ fakeEntity.rootId }}</td>
-  <td>{{ fakeEntity.name }}</td>
+  <td>
+    <span *ngIf="isEditMode">
+      <input type="text" title="edit name" [(ngModel)]="tempFakeEntity.name" /> &nbsp;
+      <a class="link" title="save changes" (click)="save()">save changes</a>
+      &nbsp;
+      <em>- or -</em>
+      &nbsp;
+      <a class="link" title="cancel" (click)="cancel()">cancel</a>
+    </span>
+    <span *ngIf="!isEditMode">
+      <a class="link" [title]="'click to edit ' + fakeEntity.name" (click)="editMode()">{{ fakeEntity.name }}</a>
+    </span>
+  </td>
   <td>
     <button (click)="remove()">remove</button>
   </td>

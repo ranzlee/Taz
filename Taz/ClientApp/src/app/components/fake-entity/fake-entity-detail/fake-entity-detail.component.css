@@ -1,0 +1,5 @@
+.link {
+  cursor: pointer !important;
+  text-decoration: underline !important;
+  color: darkorange !important;
+}

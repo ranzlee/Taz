@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpService } from '../../../services/http/http.service';
 import * as linq from 'linq';
 
@@ -13,7 +13,7 @@ export class FakeEntityGroupComponent implements OnInit {
   fakeEntities: Taz.Domain.IFakeEntity[];
   newFakeEntity: Taz.Domain.IFakeEntity;
 
-  constructor(@Inject(HttpService) private httpService: HttpService) {
+  constructor(private httpService: HttpService) {
     this.newFakeEntity = {};
   }
 

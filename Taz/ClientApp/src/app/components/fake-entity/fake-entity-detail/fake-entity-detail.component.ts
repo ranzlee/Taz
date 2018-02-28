@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Inject,
-  Input,
-  Output,
-  EventEmitter
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpService } from '../../../services/http/http.service';
 import { FakeEntityListComponent } from '../fake-entity-list/fake-entity-list.component';
 
@@ -20,13 +13,34 @@ export class FakeEntityDetailComponent implements OnInit {
   @Output() removed: EventEmitter<Taz.Domain.IFakeEntity> = new EventEmitter();
 
   isGroupExpanded = false;
+  isEditMode = false;
+  tempFakeEntity: Taz.Domain.IFakeEntity = {};
 
-  constructor(@Inject(HttpService) private httpService: HttpService) {}
+  constructor(private httpService: HttpService) {}
 
   ngOnInit() {}
 
   toggleGroup(): void {
     this.isGroupExpanded = this.isGroupExpanded ? false : true;
+  }
+
+  save(): void {
+    this.fakeEntity.name = this.tempFakeEntity.name;
+    this.httpService.post(
+      'api/FakeEntity/AddOrUpdateFakeEntity',
+      this.fakeEntity,
+      result => {}
+    );
+    this.isEditMode = false;
+  }
+
+  cancel(): void {
+    this.isEditMode = false;
+  }
+
+  editMode(): void {
+    this.tempFakeEntity.name = this.fakeEntity.name;
+    this.isEditMode = true;
   }
 
   remove(): void {
