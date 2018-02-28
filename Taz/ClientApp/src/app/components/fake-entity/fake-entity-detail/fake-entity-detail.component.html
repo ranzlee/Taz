@@ -6,7 +6,9 @@
   <td>{{ fakeEntity.parentId }}</td>
   <td>{{ fakeEntity.rootId }}</td>
   <td>{{ fakeEntity.name }}</td>
-  <td></td>
+  <td>
+    <button (click)="remove()">remove</button>
+  </td>
 </tr>
 <tr *ngIf="isGroupExpanded">
   <td colspan="6">

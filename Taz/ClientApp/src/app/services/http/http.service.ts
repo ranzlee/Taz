@@ -4,16 +4,10 @@ import { EnvironmentService } from '../../services/environment/environment.servi
 
 @Injectable()
 export class HttpService {
-  private http: HttpClient;
-  private environmentService: EnvironmentService;
-
   constructor(
-    http: HttpClient,
-    @Inject(EnvironmentService) environmentService: EnvironmentService
-  ) {
-    this.http = http;
-    this.environmentService = environmentService;
-  }
+    private http: HttpClient,
+    @Inject(EnvironmentService) private environmentService: EnvironmentService
+  ) {}
 
   get<T>(api: string, callback: (result: T) => void): void {
     this.http.get<T>(this.environmentService.baseUrl + api).subscribe(

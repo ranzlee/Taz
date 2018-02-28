@@ -1,5 +1,6 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { HttpService } from '../../../services/http/http.service';
+import * as linq from 'linq';
 
 @Component({
   selector: 'app-fake-entity-group',
@@ -7,16 +8,12 @@ import { HttpService } from '../../../services/http/http.service';
   styleUrls: ['./fake-entity-group.component.css']
 })
 export class FakeEntityGroupComponent implements OnInit {
-  // inputs
   @Input() parent: Taz.Domain.IFakeEntity;
-  // model properties
-  public fakeEntities: Taz.Domain.IFakeEntity[];
-  public newFakeEntity: Taz.Domain.IFakeEntity;
-  // private properties
-  private httpService: HttpService;
 
-  constructor(@Inject(HttpService) httpService: HttpService) {
-    this.httpService = httpService;
+  fakeEntities: Taz.Domain.IFakeEntity[];
+  newFakeEntity: Taz.Domain.IFakeEntity;
+
+  constructor(@Inject(HttpService) private httpService: HttpService) {
     this.newFakeEntity = {};
   }
 
@@ -43,5 +40,12 @@ export class FakeEntityGroupComponent implements OnInit {
         this.newFakeEntity = {};
       }
     );
+  }
+
+  onRemove(fakeEntity: Taz.Domain.IFakeEntity) {
+    this.fakeEntities = linq
+      .from(this.fakeEntities)
+      .where(x => x.id !== fakeEntity.id)
+      .toArray();
   }
 }
