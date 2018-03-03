@@ -6,7 +6,7 @@ import { FakeEntityGroupComponent } from '../fake-entity-group/fake-entity-group
 import { FakeEntityDetailComponent } from '../fake-entity-detail/fake-entity-detail.component';
 import { HttpService } from '../../../services/http/http.service';
 import { EnvironmentService } from '../../../services/environment/environment.service';
-import { FakeEntityStoreService } from '../../../services/fake-entity-store/fake-entity-store.service';
+import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-entity-store.service';
 
 describe('FakeEntityListComponent', () => {
   let component: FakeEntityListComponent;

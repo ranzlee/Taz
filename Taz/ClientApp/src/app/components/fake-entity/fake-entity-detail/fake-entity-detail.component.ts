@@ -2,12 +2,9 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { FakeEntityListComponent } from '../fake-entity-list/fake-entity-list.component';
-import { FakeEntityStoreService } from '../../../services/fake-entity-store/fake-entity-store.service';
+import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-entity-store.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -28,7 +25,7 @@ export class FakeEntityDetailComponent implements OnInit {
   ngOnInit() {}
 
   toggleGroup(): void {
-    this.isGroupExpanded = this.isGroupExpanded ? false : true;
+    this.isGroupExpanded = !this.isGroupExpanded;
   }
 
   save(): void {

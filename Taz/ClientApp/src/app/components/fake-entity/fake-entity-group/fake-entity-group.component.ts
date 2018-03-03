@@ -2,10 +2,10 @@ import {
   Component,
   Input,
   OnInit,
+  OnDestroy,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { FakeEntityStoreService } from '../../../services/fake-entity-store/fake-entity-store.service';
-import * as linq from 'linq';
+import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-entity-store.service';
 
 @Component({
   selector: 'app-fake-entity-group',
@@ -13,25 +13,24 @@ import * as linq from 'linq';
   styleUrls: ['./fake-entity-group.component.css']
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FakeEntityGroupComponent implements OnInit {
+export class FakeEntityGroupComponent implements OnInit, OnDestroy {
   @Input() parent: Taz.Domain.IFakeEntity;
 
   fakeEntities: Taz.Domain.IFakeEntity[];
-  newFakeEntity: Taz.Domain.IFakeEntity;
+  newFakeEntity: Taz.Domain.IFakeEntity = {};
 
-  constructor(private fakeEntityStoreService: FakeEntityStoreService) {
-    this.newFakeEntity = {};
-  }
+  constructor(private fakeEntityStoreService: FakeEntityStoreService) {}
 
   ngOnInit(): void {
-    const parentId = this.parent == null ? null : this.parent.id;
-    this.fakeEntityStoreService.fakeEntities.subscribe(fakeEntities => {
-      this.fakeEntities = linq
-        .from(fakeEntities)
-        .where(x => x.parentId === parentId)
-        .toArray();
+    console.log('fake enttity store - component init subscription');
+    this.fakeEntityStoreService.subscribe(this, this.parent, fakeEntities => {
+      this.fakeEntities = fakeEntities;
     });
-    this.fakeEntityStoreService.load(this.parent);
+  }
+
+  ngOnDestroy(): void {
+    console.log('fake enttity store - component destroy unsubscribe');
+    this.fakeEntityStoreService.unsubscribe(this);
   }
 
   add(): void {

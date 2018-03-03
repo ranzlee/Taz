@@ -6,7 +6,7 @@ import { EnvironmentService } from '../../services/environment/environment.servi
 export class HttpService {
   constructor(
     private http: HttpClient,
-    @Inject(EnvironmentService) private environmentService: EnvironmentService
+    private environmentService: EnvironmentService
   ) {}
 
   get<T>(api: string, callback: (result: T) => void): void {
