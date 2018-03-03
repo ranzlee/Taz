@@ -14,7 +14,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody app-fake-entity-detail *ngFor="let fakeEntity of fakeEntities" [fakeEntity]="fakeEntity" (removed)="onRemove($event)"></tbody>
+      <tbody app-fake-entity-detail *ngFor="let fakeEntity of fakeEntities" [fakeEntity]="fakeEntity"></tbody>
     </table>
   </div>
   <div *ngIf="!fakeEntities || fakeEntities.length === 0">

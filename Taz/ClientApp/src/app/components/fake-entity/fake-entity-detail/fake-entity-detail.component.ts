@@ -1,22 +1,29 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { HttpService } from '../../../services/http/http.service';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FakeEntityListComponent } from '../fake-entity-list/fake-entity-list.component';
+import { FakeEntityStoreService } from '../../../services/fake-entity-store/fake-entity-store.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: '[app-fake-entity-detail]',
   templateUrl: './fake-entity-detail.component.html',
   styleUrls: ['./fake-entity-detail.component.css']
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FakeEntityDetailComponent implements OnInit {
   @Input() fakeEntity: Taz.Domain.IFakeEntity;
-  @Output() removed: EventEmitter<Taz.Domain.IFakeEntity> = new EventEmitter();
 
   isGroupExpanded = false;
   isEditMode = false;
   tempFakeEntity: Taz.Domain.IFakeEntity = {};
 
-  constructor(private httpService: HttpService) {}
+  constructor(private fakeEntityStoreService: FakeEntityStoreService) {}
 
   ngOnInit() {}
 
@@ -26,12 +33,9 @@ export class FakeEntityDetailComponent implements OnInit {
 
   save(): void {
     this.fakeEntity.name = this.tempFakeEntity.name;
-    this.httpService.post(
-      'api/FakeEntity/AddOrUpdateFakeEntity',
-      this.fakeEntity,
-      result => {}
-    );
-    this.isEditMode = false;
+    this.fakeEntityStoreService.update(this.fakeEntity, () => {
+      this.isEditMode = false;
+    });
   }
 
   cancel(): void {
@@ -44,12 +48,6 @@ export class FakeEntityDetailComponent implements OnInit {
   }
 
   remove(): void {
-    this.httpService.post(
-      'api/FakeEntity/RemoveFakeEntity',
-      this.fakeEntity,
-      result => {
-        this.removed.emit(this.fakeEntity);
-      }
-    );
+    this.fakeEntityStoreService.remove(this.fakeEntity);
   }
 }

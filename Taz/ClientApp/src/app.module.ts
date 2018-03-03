@@ -19,6 +19,9 @@ import { LoginComponent } from './app/components/account/login/login.component';
 import { EnvironmentService } from './app/services/environment/environment.service';
 import { HttpService } from './app/services/http/http.service';
 
+// store services
+import { FakeEntityStoreService } from './app/services/fake-entity-store/fake-entity-store.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +46,7 @@ import { HttpService } from './app/services/http/http.service';
       { path: 'login', component: LoginComponent }
     ])
   ],
-  providers: [EnvironmentService, HttpService],
+  providers: [EnvironmentService, HttpService, FakeEntityStoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
