@@ -10,7 +10,7 @@ import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-e
 @Component({
   selector: 'app-fake-entity-group',
   templateUrl: './fake-entity-group.component.html',
-  styleUrls: ['./fake-entity-group.component.css']
+  styleUrls: ['./fake-entity-group.component.css'],
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FakeEntityGroupComponent implements OnInit, OnDestroy {
@@ -19,7 +19,7 @@ export class FakeEntityGroupComponent implements OnInit, OnDestroy {
   fakeEntities: Taz.Domain.IFakeEntity[];
   newFakeEntity: Taz.Domain.IFakeEntity = {};
 
-  constructor(private fakeEntityStoreService: FakeEntityStoreService) {}
+  constructor(private fakeEntityStoreService: FakeEntityStoreService) { }
 
   ngOnInit(): void {
     console.log('fake enttity store - component init subscription');

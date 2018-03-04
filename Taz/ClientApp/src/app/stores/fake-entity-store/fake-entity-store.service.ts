@@ -25,7 +25,7 @@ export class FakeEntityStoreService {
     const subscription = this.fakeEntities.subscribe(fakeEntities => {
       console.log(
         'fake entity store - subscribed - total observers = ' +
-          this.fakeEntities.observers.length
+        this.fakeEntities.observers.length
       );
       callback(
         linq
@@ -52,7 +52,7 @@ export class FakeEntityStoreService {
     );
   }
 
-  unsubscribe(subscriber: any) {
+  unsubscribe(subscriber: any, callback?: () => void) {
     linq
       .from(this.subscribers)
       .where(x => x.subscriber === subscriber)
@@ -60,12 +60,15 @@ export class FakeEntityStoreService {
       .subscription.unsubscribe();
     console.log(
       'fake entity store - unsubscribed - total observers = ' +
-        this.fakeEntities.observers.length
+      this.fakeEntities.observers.length
     );
     this.subscribers = linq
       .from(this.subscribers)
       .where(x => x.subscriber !== subscriber)
       .toArray();
+    if (callback) {
+      callback();
+    }
   }
 
   add(

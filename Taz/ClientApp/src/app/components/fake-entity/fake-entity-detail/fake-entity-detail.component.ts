@@ -10,7 +10,7 @@ import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-e
   // tslint:disable-next-line:component-selector
   selector: '[app-fake-entity-detail]',
   templateUrl: './fake-entity-detail.component.html',
-  styleUrls: ['./fake-entity-detail.component.css']
+  styleUrls: ['./fake-entity-detail.component.css'],
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FakeEntityDetailComponent implements OnInit {
@@ -20,9 +20,9 @@ export class FakeEntityDetailComponent implements OnInit {
   isEditMode = false;
   tempFakeEntity: Taz.Domain.IFakeEntity = {};
 
-  constructor(private fakeEntityStoreService: FakeEntityStoreService) {}
+  constructor(private fakeEntityStoreService: FakeEntityStoreService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   toggleGroup(): void {
     this.isGroupExpanded = !this.isGroupExpanded;

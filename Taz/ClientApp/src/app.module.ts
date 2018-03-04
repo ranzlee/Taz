@@ -49,4 +49,4 @@ import { FakeEntityStoreService } from './app/stores/fake-entity-store/fake-enti
   providers: [EnvironmentService, HttpService, FakeEntityStoreService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

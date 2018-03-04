@@ -66,7 +66,7 @@ namespace Taz.Controllers
             return Ok();
         }
 
-        private void PushStack(Stack stack, IEnumerable<FakeEntity> l)
+        void PushStack(Stack stack, IEnumerable<FakeEntity> l)
         {
             foreach (var item in l)
             {
