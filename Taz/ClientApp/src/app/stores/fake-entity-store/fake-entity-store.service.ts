@@ -1,14 +1,15 @@
-import { Injectable, Inject, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpService } from '../../services/http/http.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable, Subscribable } from 'rxjs/Observable';
-import { SubscriberMap } from '../subscriberMap';
+import { SubscriberHelper } from '../subscriberHelper';
+import { IStoreService } from '../storeService';
 import * as linq from 'linq';
 
 @Injectable()
-export class FakeEntityStoreService {
+export class FakeEntityStoreService
+  implements IStoreService<Taz.Domain.IFakeEntity[]> {
   private fakeEntities: BehaviorSubject<Taz.Domain.IFakeEntity[]>;
-  private subscribers: SubscriberMap[] = [];
+  private subscriberHelper = new SubscriberHelper();
 
   constructor(private httpService: HttpService) {
     this.fakeEntities = new BehaviorSubject<Taz.Domain.IFakeEntity[]>(
@@ -17,7 +18,7 @@ export class FakeEntityStoreService {
   }
 
   subscribe(
-    subscriber: any,
+    subscriber: OnDestroy,
     parent: Taz.Domain.IFakeEntity,
     callback: (fakeEntities: Taz.Domain.IFakeEntity[]) => void
   ): void {
@@ -25,7 +26,7 @@ export class FakeEntityStoreService {
     const subscription = this.fakeEntities.subscribe(fakeEntities => {
       console.log(
         'fake entity store - subscribed - total observers = ' +
-        this.fakeEntities.observers.length
+          this.fakeEntities.observers.length
       );
       callback(
         linq
@@ -34,10 +35,7 @@ export class FakeEntityStoreService {
           .toArray()
       );
     });
-    this.subscribers.push({
-      subscriber: subscriber,
-      subscription: subscription
-    });
+    this.subscriberHelper.addSubscriber(subscriber, subscription);
     this.httpService.get<Taz.Domain.IFakeEntity[]>(
       'api/FakeEntity/GetFakeEntities?parentid=' + parentId,
       result => {
@@ -52,20 +50,12 @@ export class FakeEntityStoreService {
     );
   }
 
-  unsubscribe(subscriber: any, callback?: () => void) {
-    linq
-      .from(this.subscribers)
-      .where(x => x.subscriber === subscriber)
-      .first()
-      .subscription.unsubscribe();
+  unsubscribe(subscriber: OnDestroy, callback?: () => void) {
+    this.subscriberHelper.removeSubscriber(subscriber);
     console.log(
       'fake entity store - unsubscribed - total observers = ' +
-      this.fakeEntities.observers.length
+        this.fakeEntities.observers.length
     );
-    this.subscribers = linq
-      .from(this.subscribers)
-      .where(x => x.subscriber !== subscriber)
-      .toArray();
     if (callback) {
       callback();
     }

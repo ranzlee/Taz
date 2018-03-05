@@ -1,6 +1,7 @@
+import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-export interface SubscriberMap {
-  subscriber: any;
+export interface ISubscriberMap {
+  subscriber: OnDestroy;
   subscription: Subscription;
 }
