@@ -26,7 +26,7 @@ export class FakeEntityStoreService
     const subscription = this.fakeEntities.subscribe(fakeEntities => {
       console.log(
         'fake entity store - subscribed - total observers = ' +
-          this.fakeEntities.observers.length
+        this.fakeEntities.observers.length
       );
       callback(
         linq
@@ -54,7 +54,7 @@ export class FakeEntityStoreService
     this.subscriberHelper.removeSubscriber(subscriber);
     console.log(
       'fake entity store - unsubscribed - total observers = ' +
-        this.fakeEntities.observers.length
+      this.fakeEntities.observers.length
     );
     if (callback) {
       callback();
@@ -87,6 +87,12 @@ export class FakeEntityStoreService
       'api/FakeEntity/AddOrUpdateFakeEntity',
       fakeEntity,
       result => {
+        this.fakeEntities.next([
+          ...linq
+            .from(this.fakeEntities.value)
+            .where(x => x.id !== fakeEntity.id)
+            .toArray()
+          , result]);
         if (callback) {
           callback();
         }

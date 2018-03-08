@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   ChangeDetectionStrategy
 } from '@angular/core';
@@ -10,19 +9,18 @@ import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-e
   // tslint:disable-next-line:component-selector
   selector: '[app-fake-entity-detail]',
   templateUrl: './fake-entity-detail.component.html',
-  styleUrls: ['./fake-entity-detail.component.css']
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./fake-entity-detail.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FakeEntityDetailComponent implements OnInit {
+export class FakeEntityDetailComponent {
+
   @Input() fakeEntity: Taz.Domain.IFakeEntity;
 
   isGroupExpanded = false;
   isEditMode = false;
   tempFakeEntity: Taz.Domain.IFakeEntity = {};
 
-  constructor(private fakeEntityStoreService: FakeEntityStoreService) {}
-
-  ngOnInit() {}
+  constructor(private fakeEntityStoreService: FakeEntityStoreService) { }
 
   toggleGroup(): void {
     this.isGroupExpanded = !this.isGroupExpanded;

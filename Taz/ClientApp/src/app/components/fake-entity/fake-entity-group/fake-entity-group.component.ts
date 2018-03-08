@@ -3,7 +3,8 @@ import {
   Input,
   OnInit,
   OnDestroy,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-entity-store.service';
 
@@ -11,20 +12,22 @@ import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-e
   selector: 'app-fake-entity-group',
   templateUrl: './fake-entity-group.component.html',
   styleUrls: ['./fake-entity-group.component.css'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FakeEntityGroupComponent implements OnInit, OnDestroy {
+
   @Input() parent: Taz.Domain.IFakeEntity;
 
   fakeEntities: Taz.Domain.IFakeEntity[];
   newFakeEntity: Taz.Domain.IFakeEntity = {};
 
-  constructor(private fakeEntityStoreService: FakeEntityStoreService) { }
+  constructor(private fakeEntityStoreService: FakeEntityStoreService, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     console.log('fake enttity store - component init subscription');
     this.fakeEntityStoreService.subscribe(this, this.parent, fakeEntities => {
       this.fakeEntities = fakeEntities;
+      this.changeDetector.markForCheck();
     });
   }
 
