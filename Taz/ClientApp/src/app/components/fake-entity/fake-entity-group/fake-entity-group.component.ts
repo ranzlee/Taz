@@ -11,17 +11,18 @@ import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-e
 @Component({
   selector: 'app-fake-entity-group',
   templateUrl: './fake-entity-group.component.html',
-  styleUrls: ['./fake-entity-group.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FakeEntityGroupComponent implements OnInit, OnDestroy {
+  @Input() parent: Taz.Model.Domain.IFakeEntity;
 
-  @Input() parent: Taz.Domain.IFakeEntity;
+  fakeEntities: Taz.Model.Domain.IFakeEntity[];
+  newFakeEntity: Taz.Model.Domain.IFakeEntity = {};
 
-  fakeEntities: Taz.Domain.IFakeEntity[];
-  newFakeEntity: Taz.Domain.IFakeEntity = {};
-
-  constructor(private fakeEntityStoreService: FakeEntityStoreService, private changeDetector: ChangeDetectorRef) { }
+  constructor(
+    private fakeEntityStoreService: FakeEntityStoreService,
+    private changeDetector: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     console.log('fake enttity store - component init subscription');

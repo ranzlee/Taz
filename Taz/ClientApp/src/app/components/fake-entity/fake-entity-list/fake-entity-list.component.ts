@@ -2,11 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-fake-entity-list',
-  templateUrl: './fake-entity-list.component.html',
-  styleUrls: ['./fake-entity-list.component.css']
+  templateUrl: './fake-entity-list.component.html'
 })
 export class FakeEntityListComponent {
-
-  constructor() { }
-
+  constructor() {}
 }

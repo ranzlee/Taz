@@ -1,13 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Taz.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Taz.Model.Domain;
 
 namespace Taz.ORM
 {
-    public class EntityContext : DbContext
+    public class EntityContext : IdentityDbContext<TazUser>
     {
         readonly IConfiguration _configuration;
+
+        public EntityContext() {}
 
         public EntityContext(IConfiguration configuration)
         {
@@ -16,6 +19,7 @@ namespace Taz.ORM
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (_configuration == null) return;
             optionsBuilder.UseSqlite(_configuration.GetConnectionString("DefaultConnection"));
         }
 
@@ -33,6 +37,7 @@ namespace Taz.ORM
             return entity;
         }
 
+        public DbSet<TazCustomer> TazCustomers { get; set; }
         public DbSet<FakeEntity> FakeEntities { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 using System.Linq;
-using Taz.Domain;
+using Taz.Model.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Xunit;

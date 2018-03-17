@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Taz.Domain
+namespace Taz.Model.Domain
 {
     public class Entity
     {

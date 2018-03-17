@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Taz.Domain;
-using Taz.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Taz.Model.Domain;
+using Taz.Model.View;
+using Taz.Services;
 
 namespace Taz.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     public class FakeEntityController : Controller
     {
@@ -38,7 +41,7 @@ namespace Taz.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> RemoveFakeEntity([FromBody] FakeEntity fakeEntity)
+        public async Task<ObjectResult> RemoveFakeEntity([FromBody] FakeEntity fakeEntity)
         {
             using (var context = _entityContextProvider.GetContext())
             {
@@ -49,7 +52,7 @@ namespace Taz.Controllers
                     .Include(i => i.RootCollection)
                     .SingleOrDefaultAsync();
                 //create stack to delete
-                if (ent == null) return Ok();
+                if (ent == null) return new OkObjectResult(new StringResponse { Data = "Fake Entity Not Found" });
                 ent = ent.Id == fakeEntity.Id
                     ? ent
                     : ent.RootCollection.SingleOrDefault(i => i.Id == fakeEntity.Id);
@@ -63,7 +66,7 @@ namespace Taz.Controllers
                 }
                 await context.SaveChangesAsync();
             }
-            return Ok();
+            return new OkObjectResult(new StringResponse { Data = "Fake Entity Removed" });
         }
 
         void PushStack(Stack stack, IEnumerable<FakeEntity> l)

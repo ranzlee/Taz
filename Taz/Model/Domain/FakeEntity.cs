@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Taz.Domain
+namespace Taz.Model.Domain
 {
     public class FakeEntity : Entity
     {

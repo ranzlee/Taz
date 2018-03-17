@@ -1,8 +1,4 @@
-import {
-  Component,
-  Input,
-  ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-entity-store.service';
 
 @Component({
@@ -13,14 +9,13 @@ import { FakeEntityStoreService } from '../../../stores/fake-entity-store/fake-e
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FakeEntityDetailComponent {
-
-  @Input() fakeEntity: Taz.Domain.IFakeEntity;
+  @Input() fakeEntity: Taz.Model.Domain.IFakeEntity;
 
   isGroupExpanded = false;
   isEditMode = false;
-  tempFakeEntity: Taz.Domain.IFakeEntity = {};
+  tempFakeEntity: Taz.Model.Domain.IFakeEntity = {};
 
-  constructor(private fakeEntityStoreService: FakeEntityStoreService) { }
+  constructor(private fakeEntityStoreService: FakeEntityStoreService) {}
 
   toggleGroup(): void {
     this.isGroupExpanded = !this.isGroupExpanded;

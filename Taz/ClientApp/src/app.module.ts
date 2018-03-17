@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { JwtModule } from '@auth0/angular-jwt';
 
 // components
 import { AppComponent } from './app/components/app/app.component';
@@ -18,6 +19,10 @@ import { LoginComponent } from './app/components/account/login/login.component';
 // services
 import { EnvironmentService } from './app/services/environment/environment.service';
 import { HttpService } from './app/services/http/http.service';
+
+// authentication
+import { AuthenticationGuard } from './authentication/authentication-guard-service';
+import { AuthenticationService } from './authentication/authentication-service';
 
 // stores
 import { FakeEntityStoreService } from './app/stores/fake-entity-store/fake-entity-store.service';
@@ -37,16 +42,34 @@ import { FakeEntityStoreService } from './app/stores/fake-entity-store/fake-enti
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token');
+        },
+        whitelistedDomains: ['localhost']
+      }
+    }),
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
+      {
+        path: 'counter',
+        component: CounterComponent,
+        canActivate: [AuthenticationGuard]
+      },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'fake-entity-list', component: FakeEntityListComponent },
       { path: 'login', component: LoginComponent }
     ])
   ],
-  providers: [EnvironmentService, HttpService, FakeEntityStoreService],
+  providers: [
+    EnvironmentService,
+    HttpService,
+    AuthenticationService,
+    AuthenticationGuard,
+    FakeEntityStoreService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
