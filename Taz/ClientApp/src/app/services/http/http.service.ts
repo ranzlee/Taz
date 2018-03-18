@@ -5,7 +5,7 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 import { EnvironmentService } from '../../services/environment/environment.service';
-import { AuthenticationService } from '../../../authentication/authentication-service';
+import { AuthenticationService } from '../../authentication/authentication-service';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class HttpService {
     private environmentService: EnvironmentService,
     private authenticationService: AuthenticationService,
     private router: Router
-  ) {}
+  ) { }
 
   get<TResult>(
     api: string,

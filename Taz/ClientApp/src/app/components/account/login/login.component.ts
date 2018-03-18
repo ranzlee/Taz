@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../../services/http/http.service';
-import { AuthenticationService } from '../../../../authentication/authentication-service';
+import { AuthenticationService } from '../../../authentication/authentication-service';
 
 @Component({
   selector: 'app-login',
@@ -13,9 +13,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private authenticationService: AuthenticationService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   register() {
     this.registerModel.email = 'randy.w.lee@gmail.com';
@@ -26,16 +26,16 @@ export class LoginComponent implements OnInit {
     this.httpService.post<
       Taz.Model.View.IRegistration,
       Taz.Model.View.IStringResponse
-    >(
-      'api/account/register',
-      this.registerModel,
-      result => {
-        console.log(result.data);
-      },
-      errors => {
-        alert(errors);
-      }
-    );
+      >(
+        'api/account/register',
+        this.registerModel,
+        result => {
+          console.log(result.data);
+        },
+        errors => {
+          alert(errors);
+        }
+      );
   }
 
   login() {
@@ -44,17 +44,17 @@ export class LoginComponent implements OnInit {
     this.httpService.post<
       Taz.Model.View.ICredentials,
       Taz.Model.View.IAuthenticationTokenResponse
-    >(
-      'api/account/login',
-      this.loginModel,
-      result => {
-        this.authenticationService.addToken(result.accessToken);
-        console.log('Authentication Token = ' + result.accessToken);
-      },
-      errors => {
-        alert(errors);
-      }
-    );
+      >(
+        'api/account/login',
+        this.loginModel,
+        result => {
+          this.authenticationService.addToken(result.accessToken);
+          console.log('Authentication Token = ' + result.accessToken);
+        },
+        errors => {
+          alert(errors);
+        }
+      );
   }
 
   logout() {

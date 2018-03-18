@@ -21,8 +21,8 @@ import { EnvironmentService } from './app/services/environment/environment.servi
 import { HttpService } from './app/services/http/http.service';
 
 // authentication
-import { AuthenticationGuard } from './authentication/authentication-guard-service';
-import { AuthenticationService } from './authentication/authentication-service';
+import { AuthenticationGuard } from './app/authentication/authentication-guard-service';
+import { AuthenticationService } from './app/authentication/authentication-service';
 
 // stores
 import { FakeEntityStoreService } from './app/stores/fake-entity-store/fake-entity-store.service';
@@ -72,4 +72,4 @@ import { FakeEntityStoreService } from './app/stores/fake-entity-store/fake-enti
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
