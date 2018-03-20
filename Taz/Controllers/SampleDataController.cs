@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Taz.Security;
 
 namespace Taz.Controllers
 {
+    [Authorize(Policy = Constants.Policies.AuthenticatedUser)]
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {

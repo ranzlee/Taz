@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Taz.Model.Domain;
 using Taz.Model.View;
+using Taz.Security;
 using Taz.Services;
 
 namespace Taz.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
+    [Authorize(Policy = Constants.Policies.Administrator)]
     [Route("api/[controller]")]
     public class FakeEntityController : Controller
     {
         readonly IEntityContextProvider _entityContextProvider;
-
         public FakeEntityController
         (
             IEntityContextProvider entityContextProvider

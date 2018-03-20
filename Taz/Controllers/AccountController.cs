@@ -1,11 +1,14 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Taz.Extensions;
 using Taz.Model.Domain;
 using Taz.Model.View;
+using Taz.Model.View.Security;
 using Taz.Security;
 using Taz.Services;
 
@@ -71,6 +74,12 @@ namespace Taz.Controllers
 
             var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName);
             return new OkObjectResult(jwt);
+        }
+
+        [HttpGet("[action]")]
+        public IEnumerable<SecurityPolicy> GetSecurityPolicies()
+        {
+            return Startup.SecurityPolicies;
         }
 
         async Task<ClaimsIdentity> GetClaimsIdentity(string userName, string password)

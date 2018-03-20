@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Taz.Model.View;
+using Taz.Model.View.Security;
 using Taz.Services;
 
 namespace Taz.Security

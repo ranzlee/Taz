@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Taz.Model.View.Security;
 
 namespace Taz.Model.View.Validators
 {

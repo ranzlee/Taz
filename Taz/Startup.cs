@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using AutoMapper;
@@ -18,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Taz.Extensions;
 using Taz.Model.Domain;
+using Taz.Model.View.Security;
 using Taz.ORM;
 using Taz.Security;
 using Taz.Services;
@@ -28,6 +30,16 @@ namespace Taz
     {
         // TODO: get this from a secure source
         const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH";
+
+        private static List<SecurityPolicy> _securityPolicies = new List<SecurityPolicy>();
+
+        public static IEnumerable<SecurityPolicy> SecurityPolicies 
+        { 
+            get
+            {
+                return _securityPolicies.AsReadOnly();
+            } 
+        }
 
         readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
@@ -43,38 +55,29 @@ namespace Taz
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EntityContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddSingleton<IJwtFactory, JwtFactory>();
             services.AddSingleton<IEntityContextProvider, EntityContextProvider>();
-
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
-
             // JWT config
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-
             services.Configure<JwtIssuerOptions>(options =>
             {
                 options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
                 options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
-
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
-
                 ValidateAudience = true,
                 ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
-
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = _signingKey,
-
                 RequireExpirationTime = false,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -85,12 +88,20 @@ namespace Taz
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
             });
-
+            // define security policies
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+                // authenticated user
+                options.AddPolicy(Constants.Policies.AuthenticatedUser, policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.AuthenticatedUser));
+                _securityPolicies.Add(new SecurityPolicy { Name = Constants.Policies.AuthenticatedUser, Roles = new string[] { Constants.JwtClaims.AuthenticatedUser } });
+                // admin
+                options.AddPolicy(Constants.Policies.Administrator, policy => policy
+                                  .RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.AuthenticatedUser)
+                                  .RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.Administrator));
+                _securityPolicies.Add(new SecurityPolicy { Name = Constants.Policies.Administrator, 
+                    Roles = new string[] { Constants.JwtClaims.AuthenticatedUser, Constants.JwtClaims.Administrator } });
+                // next
             });
-
             // add identity
             var builder = services.AddIdentityCore<TazUser>(o =>
             {
@@ -103,10 +114,8 @@ namespace Taz
             });
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<EntityContext>().AddDefaultTokenProviders();
-
             // add automapper
             services.AddAutoMapper();
-
             // MVC and JSON config
             services
                 .AddMvc()
@@ -115,14 +124,11 @@ namespace Taz
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
-
             // SPA config
             services.AddSpaStaticFiles(configuration =>
                 {
                     configuration.RootPath = "ClientApp/dist";
                 });
-
-            // return IoC.Startup.Start(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -136,7 +142,6 @@ namespace Taz
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseExceptionHandler(
             builder =>
             {
@@ -145,7 +150,6 @@ namespace Taz
                           {
                               context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                               context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
                               var error = context.Features.Get<IExceptionHandlerFeature>();
                               if (error != null)
                               {
@@ -154,18 +158,15 @@ namespace Taz
                               }
                           });
             });
-
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
-
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,

@@ -1,4 +1,4 @@
-﻿namespace Taz.Model.View
+﻿namespace Taz.Model.View.Security
 {
     public class AuthenticationTokenResponse
     {

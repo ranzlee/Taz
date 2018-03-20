@@ -11,17 +11,12 @@
                     Home
                 </a>
             </li>
-            <li class="nav-item" [routerLinkActive]='["active"]'>
-                <a class="nav-link" [routerLink]='["/counter"]'>
-                    Counter
-                </a>
-            </li>
-            <li class="nav-item" [routerLinkActive]='["active"]'>
+            <li class="nav-item" [routerLinkActive]='["active"]' *ngIf="hasPolicy('AuthenticatedUser')">
                 <a class="nav-link" [routerLink]='["/fetch-data"]'>
                     Fetch Data Example
                 </a>
             </li>
-            <li class="nav-item" [routerLinkActive]='["active"]'>
+            <li class="nav-item" [routerLinkActive]='["active"]' *ngIf="hasPolicy('Administrator')">
                 <a class="nav-link" [routerLink]='["/fake-entity-list"]'>
                     Fake Entity Example
                 </a>

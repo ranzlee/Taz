@@ -61,6 +61,13 @@ declare module Taz.Model.View {
 	{
 		data?: string;
 	}
+}
+declare module Taz.Model.View.Security {
+	export interface ISecurityPolicy
+	{
+		name?: string;
+		roles?: string[];
+	}
 	export interface IAuthenticationTokenResponse
 	{
 		accessToken?: string;
@@ -77,5 +84,17 @@ declare module Taz.Model.View {
 	{
 		userName?: string;
 		password?: string;
+	}
+	export interface IJwtToken
+	{
+		aud?: string;
+		exp?: number;
+		iat?: number;
+		id?: string;
+		iss?: string;
+		jti?: string;
+		nbf?: number;
+		rol?: string | string[];
+		sub?: string;
 	}
 }

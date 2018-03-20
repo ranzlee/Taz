@@ -28,10 +28,10 @@
     <Folder Include="ORM\" />
     <Folder Include="Security\" />
     <Folder Include="Model\View\" />
-    <Folder Include="Model\Domain\" />
     <Folder Include="Model\View\Validators\" />
     <Folder Include="Model\Domain\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Model\View\Security\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Extensions\EmptyClass.cs" />
