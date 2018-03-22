@@ -7,12 +7,11 @@ using Taz.Security;
 
 namespace Taz.Controllers
 {
-    [Authorize(Policy = Constants.Policies.AuthenticatedUser)]
+    [Authorize(Policy = Policies.AuthenticatedUser)]
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        static string[] Summaries = new[]
-        {
+        static string[] Summaries = {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 

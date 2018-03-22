@@ -26,9 +26,9 @@ namespace Taz.Security
                  new Claim(JwtRegisteredClaimNames.Sub, userName),
                  new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
                  new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst(Constants.JwtClaimIdentifiers.Id)
+                 identity.FindFirst(JwtClaimIdentifiers.Id)
              };
-            claims = claims.Concat(identity.FindAll(Constants.JwtClaimIdentifiers.Rol)).ToArray();
+            claims = claims.Concat(identity.FindAll(JwtClaimIdentifiers.Rol)).ToArray();
             // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,
@@ -45,9 +45,9 @@ namespace Taz.Security
         {
             return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
             {
-                new Claim(Constants.JwtClaimIdentifiers.Id, id),
-                new Claim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.AuthenticatedUser),
-                new Claim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.Administrator)
+                new Claim(JwtClaimIdentifiers.Id, id),
+                new Claim(JwtClaimIdentifiers.Rol, JwtClaims.AuthenticatedUser),
+                new Claim(JwtClaimIdentifiers.Rol, JwtClaims.Administrator)
             });
         }
 

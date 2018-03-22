@@ -1,4 +1,4 @@
-﻿namespace Taz.Model.View.Security
+﻿namespace Taz.Model.View.Account
 {
     public class Registration
     {

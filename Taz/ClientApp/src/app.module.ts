@@ -24,7 +24,7 @@ import { AuthenticationGuard } from './app/services/authentication/authenticatio
 import { AuthenticationService } from './app/services/authentication/authentication-service';
 
 // stores
-import { FakeEntityStoreService } from './app/stores/fake-entity-store/fake-entity-store.service';
+import { FakeEntityStoreService } from './app/services/stores/fake-entity-store/fake-entity-store.service';
 
 @NgModule({
   declarations: [

@@ -2,13 +2,13 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Taz.Extensions;
 using Taz.Model.Domain;
+using Taz.Model.Security;
 using Taz.Model.View;
-using Taz.Model.View.Security;
+using Taz.Model.View.Account;
 using Taz.Security;
 using Taz.Services;
 
@@ -77,7 +77,7 @@ namespace Taz.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<SecurityPolicy> GetSecurityPolicies()
+        public IEnumerable<PolicyMap> GetSecurityPolicies()
         {
             return Startup.SecurityPolicies;
         }

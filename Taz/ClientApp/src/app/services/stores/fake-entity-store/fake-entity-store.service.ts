@@ -1,14 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpService } from '../../services/http/http.service';
+import { HttpService } from '../../../services/http/http.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SubscriberHelper } from '../subscriberHelper';
-import { IStoreService } from '../storeService';
+import { SubscriberHelper } from '../../subscriberHelper';
+import { ISubscriberService } from '../../subscriberService';
 import * as linq from 'linq';
-import { HttpResponse } from 'selenium-webdriver/http';
 
 @Injectable()
 export class FakeEntityStoreService
-  implements IStoreService<Taz.Model.Domain.IFakeEntity[]> {
+  implements ISubscriberService<Taz.Model.Domain.IFakeEntity[]> {
   private fakeEntities: BehaviorSubject<Taz.Model.Domain.IFakeEntity[]>;
   private subscriberHelper = new SubscriberHelper();
 

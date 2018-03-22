@@ -11,12 +11,12 @@
                     Home
                 </a>
             </li>
-            <li class="nav-item" [routerLinkActive]='["active"]' *ngIf="hasPolicy('AuthenticatedUser')">
+            <li class="nav-item" [routerLinkActive]='["active"]' *ngIf="isAuthenticatedUser">
                 <a class="nav-link" [routerLink]='["/fetch-data"]'>
                     Fetch Data Example
                 </a>
             </li>
-            <li class="nav-item" [routerLinkActive]='["active"]' *ngIf="hasPolicy('Administrator')">
+            <li class="nav-item" [routerLinkActive]='["active"]' *ngIf="isAdministrator">
                 <a class="nav-link" [routerLink]='["/fake-entity-list"]'>
                     Fake Entity Example
                 </a>

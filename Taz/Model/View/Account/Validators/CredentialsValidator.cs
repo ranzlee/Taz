@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using Taz.Model.View.Security;
 
-namespace Taz.Model.View.Validators
+namespace Taz.Model.View.Account.Validators
 {
     public class CredentialsValidator : AbstractValidator<Credentials>
     {

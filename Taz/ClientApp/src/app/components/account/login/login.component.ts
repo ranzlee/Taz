@@ -7,8 +7,8 @@ import { AuthenticationService } from '../../../services/authentication/authenti
   templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
-  loginModel: Taz.Model.View.Security.ICredentials = {};
-  registerModel: Taz.Model.View.Security.IRegistration = {};
+  loginModel: Taz.Model.View.Account.ICredentials = {};
+  registerModel: Taz.Model.View.Account.IRegistration = {};
 
   constructor(
     private httpService: HttpService,
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     this.registerModel.location = 'Tallahassee, Florida';
     this.registerModel.password = 'tester';
     this.httpService.post<
-      Taz.Model.View.Security.IRegistration,
+      Taz.Model.View.Account.IRegistration,
       Taz.Model.View.IStringResponse
     >(
       'api/account/register',
@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit {
     this.loginModel.userName = 'randy.w.lee@gmail.com';
     this.loginModel.password = 'tester';
     this.httpService.post<
-      Taz.Model.View.Security.ICredentials,
-      Taz.Model.View.Security.IAuthenticationTokenResponse
+      Taz.Model.View.Account.ICredentials,
+      Taz.Model.Security.IAuthenticationTokenResponse
     >(
       'api/account/login',
       this.loginModel,

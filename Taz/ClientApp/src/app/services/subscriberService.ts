@@ -1,6 +1,6 @@
 import { OnDestroy } from '@angular/core';
 
-export interface IStoreService<T> {
+export interface ISubscriberService<T> {
   subscribe(
     subscriber: OnDestroy,
     data: any,

@@ -12,7 +12,7 @@ using Taz.Services;
 
 namespace Taz.Controllers
 {
-    [Authorize(Policy = Constants.Policies.Administrator)]
+    [Authorize(Policy = Policies.Administrator)]
     [Route("api/[controller]")]
     public class FakeEntityController : Controller
     {

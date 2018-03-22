@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Taz.Model.Domain;
-using Taz.Model.View;
-using Taz.Model.View.Security;
+using Taz.Model.View.Account;
 
 namespace Taz.Model
 {

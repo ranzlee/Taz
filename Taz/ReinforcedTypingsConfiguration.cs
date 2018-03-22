@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Reinforced.Typings.Ast.TypeNames;
 using Reinforced.Typings.Fluent;
 using Taz.Model.Domain;
+using Taz.Model.Security;
 using Taz.Model.View;
-using Taz.Model.View.Security;
+using Taz.Model.View.Account;
 
 namespace Taz
 {
@@ -17,23 +18,26 @@ namespace Taz
                 // ASPNET identity base types
                 typeof(IdentityUser<string>),
                 typeof(IdentityUser),
-                // domain entities
+                // domain entity models
                 typeof(TazUser),
                 typeof(Entity),
                 typeof(TazCustomer),
                 typeof(FakeEntity),
                 // view models
                 typeof(StringResponse),
-                // security view models
-                typeof(SecurityPolicy),
+                // security models
+                typeof(PolicyMap),
                 typeof(AuthenticationTokenResponse),
                 typeof(Registration),
                 typeof(Credentials)
             }, c => c.WithPublicProperties(p => p.ForceNullable()));
 
+            //policy type enum
+            builder.ExportAsEnum<PolicyTypeEnum>().Const();
+                   
             //JwtToken
             builder.ExportAsInterface<JwtToken>()
-                   .WithProperty(p => p.rol, p => p.InferType(_ => "string | string[]"))
+                   .WithProperty(p => p.rol, p => p.InferType(t => "string | string[]"))
                    .WithAllProperties(p => p.ForceNullable());
             
             // global type substitutions

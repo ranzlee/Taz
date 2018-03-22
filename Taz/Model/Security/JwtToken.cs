@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Taz.Model.View.Security
+namespace Taz.Model.Security
 {
     public class JwtToken
     {

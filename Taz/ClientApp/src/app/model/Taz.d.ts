@@ -62,28 +62,16 @@ declare module Taz.Model.View {
 		data?: string;
 	}
 }
-declare module Taz.Model.View.Security {
-	export interface ISecurityPolicy
+declare module Taz.Model.Security {
+	export interface IPolicyMap
 	{
-		name?: string;
+		policyName?: string;
+		policyType?: Taz.Model.Security.PolicyTypeEnum;
 		roles?: string[];
 	}
 	export interface IAuthenticationTokenResponse
 	{
 		accessToken?: string;
-	}
-	export interface IRegistration
-	{
-		email?: string;
-		password?: string;
-		firstName?: string;
-		lastName?: string;
-		location?: string;
-	}
-	export interface ICredentials
-	{
-		userName?: string;
-		password?: string;
 	}
 	export interface IJwtToken
 	{
@@ -96,5 +84,24 @@ declare module Taz.Model.View.Security {
 		nbf?: number;
 		rol?: string | string[];
 		sub?: string;
+	}
+	export const enum PolicyTypeEnum { 
+		AuthenticatedUser = 0, 
+		Administrator = 1, 
+	}
+}
+declare module Taz.Model.View.Account {
+	export interface IRegistration
+	{
+		email?: string;
+		password?: string;
+		firstName?: string;
+		lastName?: string;
+		location?: string;
+	}
+	export interface ICredentials
+	{
+		userName?: string;
+		password?: string;
 	}
 }

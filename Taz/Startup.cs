@@ -19,7 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Taz.Extensions;
 using Taz.Model.Domain;
-using Taz.Model.View.Security;
+using Taz.Model.Security;
 using Taz.ORM;
 using Taz.Security;
 using Taz.Services;
@@ -31,9 +31,9 @@ namespace Taz
         // TODO: get this from a secure source
         const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH";
 
-        private static List<SecurityPolicy> _securityPolicies = new List<SecurityPolicy>();
+        static List<PolicyMap> _securityPolicies = new List<PolicyMap>();
 
-        public static IEnumerable<SecurityPolicy> SecurityPolicies 
+        public static IEnumerable<PolicyMap> SecurityPolicies 
         { 
             get
             {
@@ -92,14 +92,19 @@ namespace Taz
             services.AddAuthorization(options =>
             {
                 // authenticated user
-                options.AddPolicy(Constants.Policies.AuthenticatedUser, policy => policy.RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.AuthenticatedUser));
-                _securityPolicies.Add(new SecurityPolicy { Name = Constants.Policies.AuthenticatedUser, Roles = new string[] { Constants.JwtClaims.AuthenticatedUser } });
+                options.AddPolicy(Policies.AuthenticatedUser, policy => policy.RequireClaim(JwtClaimIdentifiers.Rol, JwtClaims.AuthenticatedUser));
+                _securityPolicies.Add(new PolicyMap { 
+                    PolicyName = Policies.AuthenticatedUser, 
+                    PolicyType = PolicyTypeEnum.AuthenticatedUser, 
+                    Roles = new string[] { JwtClaims.AuthenticatedUser } });
                 // admin
-                options.AddPolicy(Constants.Policies.Administrator, policy => policy
-                                  .RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.AuthenticatedUser)
-                                  .RequireClaim(Constants.JwtClaimIdentifiers.Rol, Constants.JwtClaims.Administrator));
-                _securityPolicies.Add(new SecurityPolicy { Name = Constants.Policies.Administrator, 
-                    Roles = new string[] { Constants.JwtClaims.AuthenticatedUser, Constants.JwtClaims.Administrator } });
+                options.AddPolicy(Policies.Administrator, policy => policy
+                                  .RequireClaim(JwtClaimIdentifiers.Rol, JwtClaims.AuthenticatedUser)
+                                  .RequireClaim(JwtClaimIdentifiers.Rol, JwtClaims.Administrator));
+                _securityPolicies.Add(new PolicyMap { 
+                    PolicyName = Policies.Administrator, 
+                    PolicyType = PolicyTypeEnum.Administrator, 
+                    Roles = new string[] { JwtClaims.AuthenticatedUser, JwtClaims.Administrator } });
                 // next
             });
             // add identity
