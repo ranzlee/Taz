@@ -1,10 +1,10 @@
 import { OnDestroy } from '@angular/core';
 
-export interface ISubscriberService<T> {
+export interface ISubscriberService<TObservable> {
   subscribe(
     subscriber: OnDestroy,
     data: any,
-    callback: (observableResults: T) => void
+    callback: (observableResults: TObservable) => void
   ): void;
   unsubscribe(subscriber: OnDestroy, callback?: () => void): void;
 }

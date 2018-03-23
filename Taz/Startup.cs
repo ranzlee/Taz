@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -87,6 +90,23 @@ namespace Taz
                 configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
+                //configureOptions.Events = new JwtBearerEvents
+                //{
+                //    OnTokenValidated = context =>
+                //    {
+                //        var accessToken = context.SecurityToken as JwtSecurityToken;
+                //        if (accessToken != null)
+                //        {
+                //            ClaimsIdentity identity = context.Principal.Identity as ClaimsIdentity;
+                //            if (identity != null)
+                //            {
+                                
+                //            }
+                //        }
+
+                //        return Task.CompletedTask;
+                //    }
+                //};
             });
             // define security policies
             services.AddAuthorization(options =>

@@ -13,7 +13,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   constructor(private authenticationService: AuthenticationService) {}
 
   ngOnInit(): void {
-    this.authenticationService.subscribe(this, null, policyAuthorizations => {
+    this.authenticationService.subscribe(this, policyAuthorizations => {
       this.isAdministrator = false;
       this.isAuthenticatedUser = false;
       policyAuthorizations.forEach(policyAuthorization => {

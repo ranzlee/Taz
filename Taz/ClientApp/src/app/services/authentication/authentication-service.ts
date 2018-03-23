@@ -1,6 +1,6 @@
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { PolicyAuthorization } from './policyAuthorization';
 import { Observable } from 'rxjs/Observable';
 import { ISubscriberService } from '../subscriberService';
@@ -25,7 +25,6 @@ export class AuthenticationService
 
   subscribe(
     subscriber: OnDestroy,
-    data: any,
     callback: (observableResults: PolicyAuthorization[]) => void
   ): void {
     const subscription = this.policyAuthorizations.subscribe(
@@ -40,11 +39,26 @@ export class AuthenticationService
     this.subscriberHelper.addSubscriber(subscriber, subscription);
     // this is for re-bootstrap on browser refresh
     this.httpClient
-      .get<Taz.Model.Security.IPolicyMap[]>('api/account/getsecuritypolicies')
-      .subscribe(result => {
-        this.securityPolicies = result;
-        this.policyAuthorizations.next(this.resolvePolicies());
-      });
+      .get<Taz.Model.Security.IPolicyMap[]>(
+        'api/security/getsecuritypolicies',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.getToken()}`
+          }
+        }
+      )
+      .subscribe(
+        result => {
+          this.securityPolicies = result;
+          this.policyAuthorizations.next(this.resolvePolicies());
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          if (httpErrorResponse.status === 401) {
+            this.removeToken();
+          }
+        }
+      );
   }
 
   unsubscribe(subscriber: OnDestroy, callback?: () => void): void {
@@ -81,7 +95,15 @@ export class AuthenticationService
     // this is for login
     localStorage.setItem('access_token', token);
     this.httpClient
-      .get<Taz.Model.Security.IPolicyMap[]>('api/account/getsecuritypolicies')
+      .get<Taz.Model.Security.IPolicyMap[]>(
+        'api/security/getsecuritypolicies',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.getToken()}`
+          }
+        }
+      )
       .subscribe(result => {
         this.securityPolicies = result;
         this.policyAuthorizations.next(this.resolvePolicies());
@@ -92,7 +114,7 @@ export class AuthenticationService
     // this is for logout
     localStorage.removeItem('access_token');
     this.httpClient
-      .get<Taz.Model.Security.IPolicyMap[]>('api/account/getsecuritypolicies')
+      .get<Taz.Model.Security.IPolicyMap[]>('api/security/getsecuritypolicies')
       .subscribe(result => {
         this.securityPolicies = result;
         this.policyAuthorizations.next(this.resolvePolicies());

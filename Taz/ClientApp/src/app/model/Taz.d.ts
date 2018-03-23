@@ -28,6 +28,9 @@ declare module Microsoft.AspNetCore.Identity {
 declare module Taz.Model.Domain {
 	export interface ITazUser extends Microsoft.AspNetCore.Identity.IIdentityUser
 	{
+		isActivated?: boolean;
+		isSuspended?: boolean;
+		isDisabled?: boolean;
 		firstName?: string;
 		lastName?: string;
 		facebookId?: number;
