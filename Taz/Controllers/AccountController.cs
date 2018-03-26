@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Taz.Extensions;
 using Taz.Model.Domain;
-using Taz.Model.Security;
 using Taz.Model.View;
 using Taz.Model.View.Account;
 using Taz.Security;
@@ -81,73 +79,48 @@ namespace Taz.Controllers
 
         async Task<AuthenticationChallengeResult> GetClaimsIdentity(string userName, string password)
         {
+            const string invalidUserNameOrPassword = "Invalid username or password.";
+            const string accountNotActivated = "Account has not been activated.";
+            const string accountSuspended = "Account is suspended.";
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
-            { 
-                return await Task.FromResult<AuthenticationChallengeResult>(
-                    new AuthenticationChallengeResult
-                { 
-                    ClaimsIdentity = null, 
-                    ChallengeResult = "Invalid username or password." 
-                }); 
+            {
+                return await BuildClaimsIdentity(null, invalidUserNameOrPassword);
             }
-
             // get the user to verifty
             var userToVerify = await _userManager.FindByNameAsync(userName);
-
+            // user name is invalid
             if (userToVerify == null) 
             {
-                return await Task.FromResult<AuthenticationChallengeResult>(
-                    new AuthenticationChallengeResult
-                { 
-                    ClaimsIdentity = null, 
-                    ChallengeResult = "Invalid username or password." 
-                }); 
+                return await BuildClaimsIdentity(null, invalidUserNameOrPassword);
             }
-
             // check the credentials
             if (await _userManager.CheckPasswordAsync(userToVerify, password))
             {
                 if (!userToVerify.IsActivated)
                 {
-                    return await Task.FromResult<AuthenticationChallengeResult>(
-                    new AuthenticationChallengeResult
-                    {
-                        ClaimsIdentity = null,
-                        ChallengeResult = "Account has not been activated."
-                    });
+                    return await BuildClaimsIdentity(null, accountNotActivated);
                 }
                 if (userToVerify.IsDisabled)
                 {
-                    return await Task.FromResult<AuthenticationChallengeResult>(
-                    new AuthenticationChallengeResult
-                    {
-                        ClaimsIdentity = null,
-                        ChallengeResult = "Invalid username or password."
-                    });
+                    return await BuildClaimsIdentity(null, invalidUserNameOrPassword);
                 }
                 if (userToVerify.IsSuspended)
                 {
-                    return await Task.FromResult<AuthenticationChallengeResult>(
-                    new AuthenticationChallengeResult
-                    {
-                        ClaimsIdentity = null,
-                        ChallengeResult = "Account is suspended."
-                    });
+                    return await BuildClaimsIdentity(null, accountSuspended);
                 }
-                return await Task.FromResult<AuthenticationChallengeResult>(
-                    new AuthenticationChallengeResult
-                { 
-                    ClaimsIdentity = _jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id), 
-                    ChallengeResult = "" 
-                }); 
+                return await BuildClaimsIdentity(_jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id), "");
             }
+            // password is invalid
+            return await BuildClaimsIdentity(null, invalidUserNameOrPassword);
+        }
 
-            // Credentials are invalid, or account doesn't exist
-            return await Task.FromResult<AuthenticationChallengeResult>(
+        async Task<AuthenticationChallengeResult> BuildClaimsIdentity(ClaimsIdentity claimsIdentity, string challengeResult)
+        {
+            return await Task.FromResult(
                 new AuthenticationChallengeResult
                 {
-                    ClaimsIdentity = null,
-                    ChallengeResult = "Invalid username or password."
+                    ClaimsIdentity = claimsIdentity,
+                    ChallengeResult = challengeResult
                 });
         }
     }

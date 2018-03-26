@@ -55,13 +55,20 @@ import { FakeEntityStoreService } from './app/services/stores/fake-entity-store/
       {
         path: 'fetch-data',
         component: FetchDataComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard],
+        data: {
+          expectedPolicy: Taz.Model.Security.PolicyTypeEnum.AuthenticatedUser
+        }
       },
       {
         path: 'fake-entity-list',
         component: FakeEntityListComponent,
-        canActivate: [AuthenticationGuard]
-      }
+        canActivate: [AuthenticationGuard],
+        data: {
+          expectedPolicy: Taz.Model.Security.PolicyTypeEnum.Administrator
+        }
+      },
+      { path: '**', redirectTo: '' }
     ])
   ],
   providers: [

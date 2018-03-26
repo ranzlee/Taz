@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Taz.Model.Domain;
-using Taz.Model.Security;
 using Taz.Security;
 using Taz.Services;
 
@@ -43,7 +38,8 @@ namespace Taz.Controllers
                         user = await context.FindAsync<TazUser>(idClaim.Value);
                     }    
                 }
-                if (user == null)
+                //we have a token, but the user has either been deleted, disabled, or suspended since last authentication
+                if (user == null || user.IsDisabled || user.IsSuspended)
                 {
                     return Unauthorized();
                 }
