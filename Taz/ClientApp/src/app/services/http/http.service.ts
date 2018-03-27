@@ -5,7 +5,7 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 import { EnvironmentService } from '../../services/environment/environment.service';
-import { AuthenticationService } from '../../services/authentication/authentication-service';
+import { SecurityService } from '../../services/security/security-service';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class HttpService {
   constructor(
     private httpClient: HttpClient,
     private environmentService: EnvironmentService,
-    private authenticationService: AuthenticationService,
+    private securityService: SecurityService,
     private router: Router
   ) {}
 
@@ -26,7 +26,7 @@ export class HttpService {
       .get<TResult>(this.environmentService.baseUrl + api, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.authenticationService.getToken()}`
+          Authorization: `Bearer ${this.securityService.getToken()}`
         }
       })
       .subscribe(
@@ -52,7 +52,7 @@ export class HttpService {
       .post<TResult>(this.environmentService.baseUrl + api, payload, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.authenticationService.getToken()}`
+          Authorization: `Bearer ${this.securityService.getToken()}`
         }
       })
       .subscribe(

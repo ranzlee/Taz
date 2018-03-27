@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../../services/http/http.service';
-import { AuthenticationService } from '../../../services/authentication/authentication-service';
+import { SecurityService } from '../../../services/security/security-service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private httpService: HttpService,
-    private authenticationService: AuthenticationService
+    private securityService: SecurityService
   ) {}
 
   ngOnInit() {}
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       'api/account/login',
       this.loginModel,
       result => {
-        this.authenticationService.addToken(result.accessToken);
+        this.securityService.addToken(result.accessToken);
         console.log('Authentication Token = ' + result.accessToken);
       },
       errors => {
@@ -58,6 +58,6 @@ export class LoginComponent implements OnInit {
   }
 
   logout() {
-    this.authenticationService.removeToken();
+    this.securityService.removeToken();
   }
 }

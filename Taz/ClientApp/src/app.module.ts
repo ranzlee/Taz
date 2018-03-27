@@ -19,9 +19,9 @@ import { NotAuthorizedComponent } from './app/components/not-authorized/not-auth
 // services
 import { EnvironmentService } from './app/services/environment/environment.service';
 import { HttpService } from './app/services/http/http.service';
-import { TokenService } from './app/services/authentication/token-service';
-import { AuthenticationGuard } from './app/services/authentication/authentication-guard-service';
-import { AuthenticationService } from './app/services/authentication/authentication-service';
+import { TokenService } from './app/services/security/token-service';
+import { RouteGuard } from './app/services/security/route-guard';
+import { SecurityService } from './app/services/security/security-service';
 
 // stores
 import { FakeEntityStoreService } from './app/services/stores/fake-entity-store/fake-entity-store.service';
@@ -55,7 +55,7 @@ import { FakeEntityStoreService } from './app/services/stores/fake-entity-store/
       {
         path: 'fetch-data',
         component: FetchDataComponent,
-        canActivate: [AuthenticationGuard],
+        canActivate: [RouteGuard],
         data: {
           expectedPolicy: Taz.Model.Security.PolicyTypeEnum.AuthenticatedUser
         }
@@ -63,7 +63,7 @@ import { FakeEntityStoreService } from './app/services/stores/fake-entity-store/
       {
         path: 'fake-entity-list',
         component: FakeEntityListComponent,
-        canActivate: [AuthenticationGuard],
+        canActivate: [RouteGuard],
         data: {
           expectedPolicy: Taz.Model.Security.PolicyTypeEnum.Administrator
         }
@@ -74,8 +74,8 @@ import { FakeEntityStoreService } from './app/services/stores/fake-entity-store/
   providers: [
     EnvironmentService,
     HttpService,
-    AuthenticationService,
-    AuthenticationGuard,
+    SecurityService,
+    RouteGuard,
     TokenService,
     FakeEntityStoreService
   ],

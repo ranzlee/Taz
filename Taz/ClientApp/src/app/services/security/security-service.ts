@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SubscriberHelper } from '../subscriberHelper';
 
 @Injectable()
-export class AuthenticationService
+export class SecurityService
   implements ISubscriberService<PolicyAuthorization[]> {
   private subscriberHelper = new SubscriberHelper();
   private securityPolicies: Taz.Model.Security.IPolicyMap[] = [];
@@ -30,7 +30,7 @@ export class AuthenticationService
     const subscription = this.policyAuthorizations.subscribe(
       policyAuthorizations => {
         console.log(
-          'authentication service - subscribed - total observers = ' +
+          'security service - subscribed - total observers = ' +
             this.policyAuthorizations.observers.length
         );
         callback(policyAuthorizations);
@@ -64,7 +64,7 @@ export class AuthenticationService
   unsubscribe(subscriber: OnDestroy, callback?: () => void): void {
     this.subscriberHelper.removeSubscriber(subscriber);
     console.log(
-      'authentication service - unsubscribed - total observers = ' +
+      'security service - unsubscribed - total observers = ' +
         this.policyAuthorizations.observers.length
     );
     if (callback) {

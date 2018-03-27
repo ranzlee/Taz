@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication/authentication-service';
-import { PolicyAuthorization } from '../../services/authentication/policyAuthorization';
+import { SecurityService } from '../../services/security/security-service';
+import { PolicyAuthorization } from '../../services/security/policyAuthorization';
 
 @Component({
   selector: 'app-nav-menu',
@@ -10,10 +10,10 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   isAuthenticatedUser = false;
   isAdministrator = false;
 
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(private securityService: SecurityService) {}
 
   ngOnInit(): void {
-    this.authenticationService.subscribe(this, policyAuthorizations => {
+    this.securityService.subscribe(this, policyAuthorizations => {
       this.isAdministrator = false;
       this.isAuthenticatedUser = false;
       policyAuthorizations.forEach(policyAuthorization => {
@@ -32,6 +32,6 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.authenticationService.unsubscribe(this);
+    this.securityService.unsubscribe(this);
   }
 }

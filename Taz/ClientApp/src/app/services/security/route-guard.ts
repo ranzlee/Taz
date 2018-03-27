@@ -1,17 +1,17 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { AuthenticationService } from './authentication-service';
+import { SecurityService } from './security-service';
 import { PolicyAuthorization } from './policyAuthorization';
 
 @Injectable()
-export class AuthenticationGuard implements OnDestroy, CanActivate {
+export class RouteGuard implements OnDestroy, CanActivate {
   private policyAuthorizations: PolicyAuthorization[];
 
   constructor(
-    private authenticationService: AuthenticationService,
+    private securityService: SecurityService,
     private router: Router
   ) {
-    this.authenticationService.subscribe(this, policyAuthorizations => {
+    this.securityService.subscribe(this, policyAuthorizations => {
       this.policyAuthorizations = policyAuthorizations;
     });
   }
@@ -22,7 +22,7 @@ export class AuthenticationGuard implements OnDestroy, CanActivate {
       expectedPolicy = route.data
         .expectedPolicy as Taz.Model.Security.PolicyTypeEnum;
     }
-    if (this.authenticationService.loggedIn()) {
+    if (this.securityService.loggedIn()) {
       if (expectedPolicy) {
         if (
           this.policyAuthorizations &&
@@ -43,13 +43,13 @@ export class AuthenticationGuard implements OnDestroy, CanActivate {
         return true;
       }
     } else {
-      this.authenticationService.removeToken();
+      this.securityService.removeToken();
       this.router.navigateByUrl('/login');
       return false;
     }
   }
 
   ngOnDestroy(): void {
-    this.authenticationService.unsubscribe(this);
+    this.securityService.unsubscribe(this);
   }
 }
