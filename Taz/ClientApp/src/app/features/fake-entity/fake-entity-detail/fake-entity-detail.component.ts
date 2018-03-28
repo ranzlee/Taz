@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { FakeEntityStoreService } from '../../../services/stores/fake-entity-store/fake-entity-store.service';
+import { FakeEntityStoreService } from '.././fake-entity-store.service';
 
 @Component({
   // tslint:disable-next-line:component-selector

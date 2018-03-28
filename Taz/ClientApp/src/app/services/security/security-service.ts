@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { ISubscriberService } from '../subscriberService';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SubscriberHelper } from '../subscriberHelper';
+import { Router } from '@angular/router';
+import * as linq from 'linq';
 
 @Injectable()
 export class SecurityService
@@ -16,7 +18,8 @@ export class SecurityService
 
   constructor(
     private jwtHelperService: JwtHelperService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private router: Router
   ) {
     this.policyAuthorizations = new BehaviorSubject<PolicyAuthorization[]>(
       new Array<PolicyAuthorization>()
@@ -124,12 +127,25 @@ export class SecurityService
   private resolvePolicies(): PolicyAuthorization[] {
     const t = this.decodeToken(this.jwtHelperService.tokenGetter());
     const results: PolicyAuthorization[] = [];
+    const routes = this.router.config;
+    const anonymousRoutes = linq
+      .from(routes)
+      .where(
+        r =>
+          !r.data ||
+          !r.data.authorizedPolicies ||
+          !r.data.authorizedPolicies.length ||
+          r.data.authorizedPolicies.length === 0
+      )
+      .select(r => r.path)
+      .toArray();
     this.securityPolicies.forEach(securityPolicy => {
       if (!this.loggedIn()) {
         results.push({
           policyType: securityPolicy.policyType,
           policyName: securityPolicy.policyName,
-          authorized: false
+          authorized: false,
+          routes: anonymousRoutes
         });
       } else {
         let isAuthorized = false;
@@ -147,10 +163,31 @@ export class SecurityService
             isAuthorized = true;
           }
         }
+        let authorizedRoutes = [];
+        if (isAuthorized) {
+          authorizedRoutes = linq
+            .from(routes)
+            .where(
+              r =>
+                r.data &&
+                r.data.authorizedPolicies &&
+                r.data.authorizedPolicies.length &&
+                r.data.authorizedPolicies.length > 0
+            )
+            .where(r =>
+              linq
+                .from(r.data
+                  .authorizedPolicies as Taz.Model.Security.PolicyTypeEnum[])
+                .any(p => p === securityPolicy.policyType)
+            )
+            .select(r => r.path)
+            .toArray();
+        }
         results.push({
           policyType: securityPolicy.policyType,
           policyName: securityPolicy.policyName,
-          authorized: isAuthorized
+          authorized: isAuthorized,
+          routes: [...anonymousRoutes, ...authorizedRoutes]
         });
       }
     });

@@ -6,7 +6,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
-import { FakeEntityStoreService } from '../../../services/stores/fake-entity-store/fake-entity-store.service';
+import { FakeEntityStoreService } from '.././fake-entity-store.service';
 
 @Component({
   selector: 'app-fake-entity-group',

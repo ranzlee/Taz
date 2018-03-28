@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpService } from '../../../services/http/http.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SubscriberHelper } from '../../subscriberHelper';
-import { ISubscriberService } from '../../subscriberService';
+import { ISubscriberService } from '../../services/subscriberService';
+import { SubscriberHelper } from '../../services/subscriberHelper';
+import { HttpService } from '../../services/http/http.service';
 import * as linq from 'linq';
 
 @Injectable()

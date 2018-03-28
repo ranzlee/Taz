@@ -1,10 +1,18 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
+import {
+  CanActivate,
+  Router,
+  ActivatedRouteSnapshot,
+  CanLoad,
+  Route
+} from '@angular/router';
 import { SecurityService } from './security-service';
 import { PolicyAuthorization } from './policyAuthorization';
+import * as linq from 'linq';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class RouteGuard implements OnDestroy, CanActivate {
+export class RouteGuard implements OnDestroy, CanActivate, CanLoad {
   private policyAuthorizations: PolicyAuthorization[];
 
   constructor(
@@ -16,32 +24,25 @@ export class RouteGuard implements OnDestroy, CanActivate {
     });
   }
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
-    let expectedPolicy: Taz.Model.Security.PolicyTypeEnum;
-    if (route.data && route.data.expectedPolicy) {
-      expectedPolicy = route.data
-        .expectedPolicy as Taz.Model.Security.PolicyTypeEnum;
-    }
+  canLoad(route: Route): boolean | Observable<boolean> | Promise<boolean> {
     if (this.securityService.loggedIn()) {
-      if (expectedPolicy) {
-        if (
-          this.policyAuthorizations &&
-          this.policyAuthorizations.length &&
-          this.policyAuthorizations.length > 0
-        ) {
-          for (let x = 0; x < this.policyAuthorizations.length; x++) {
-            if (
-              this.policyAuthorizations[x].policyType === expectedPolicy &&
-              this.policyAuthorizations[x].authorized
-            ) {
-              return true;
-            }
-          }
-        }
-        return false;
-      } else {
-        return true;
-      }
+      return linq
+        .from(this.policyAuthorizations)
+        .where(p => p.authorized)
+        .any(p => linq.from(p.routes).any(r => r === route.path));
+    } else {
+      this.securityService.removeToken();
+      this.router.navigateByUrl('/login');
+      return false;
+    }
+  }
+
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    if (this.securityService.loggedIn()) {
+      return linq
+        .from(this.policyAuthorizations)
+        .where(p => p.authorized)
+        .any(p => linq.from(p.routes).any(r => r === route.routeConfig.path));
     } else {
       this.securityService.removeToken();
       this.router.navigateByUrl('/login');

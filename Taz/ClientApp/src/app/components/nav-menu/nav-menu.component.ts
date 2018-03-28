@@ -17,7 +17,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       this.isAdministrator = false;
       this.isAuthenticatedUser = false;
       policyAuthorizations.forEach(policyAuthorization => {
-        switch (policyAuthorization.policyType as number) {
+        switch (policyAuthorization.policyType) {
           case Taz.Model.Security.PolicyTypeEnum.Administrator:
             this.isAdministrator = policyAuthorization.authorized;
             break;
