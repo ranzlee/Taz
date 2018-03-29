@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// components
 import { HomeComponent } from './app/components/home/home.component';
 import { LoginComponent } from './app/components/account/login/login.component';
 import { FetchDataComponent } from './app/components/fetch-data/fetch-data.component';
-import { RouteGuard } from './app/services/security/route-guard';
-import { FakeEntityListComponent } from './app/features/fake-entity/fake-entity-list/fake-entity-list.component';
 import { NotAuthorizedComponent } from './app/components/not-authorized/not-authorized.component';
+
+// services
+import { RouteGuard } from './app/services/security/route-guard';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -40,4 +43,4 @@ const appRoutes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

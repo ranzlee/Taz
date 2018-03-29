@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <button title="show" (click)="toggleGroup()">{{ isGroupExpanded ? '-' : '+' }}</button>
+    <button class="btn btn-dark" title="show" (click)="toggleGroup()">{{ isGroupExpanded ? '-' : '+' }}</button>
   </td>
   <td>{{ fakeEntity.id }}</td>
   <td>{{ fakeEntity.parentId }}</td>
@@ -21,7 +21,7 @@
     </ng-template>
   </td>
   <td>
-    <button (click)="remove()">remove</button>
+    <button class="btn btn-danger" (click)="remove()">remove</button>
   </td>
 </tr>
 <tr *ngIf="isGroupExpanded">

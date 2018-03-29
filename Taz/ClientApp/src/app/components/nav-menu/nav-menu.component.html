@@ -1,31 +1,33 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class='navbar-brand' routerLink="/">Taz</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item" routerLinkActive="active" routerLinkActiveOptions='{ exact: true }'>
-                <a class="nav-link" routerLink="/">
-                    Home
-                </a>
-            </li>
-            <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticatedUser">
-                <a class="nav-link" routerLink="/fetch-data">
-                    Fetch Data Example
-                </a>
-            </li>
-            <li class="nav-item" routerLinkActive="active" *ngIf="isAdministrator">
-                <a class="nav-link" routerLink="/fake-entity-list">
-                    Fake Entity Example
-                </a>
-            </li>
-            <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link" routerLink="/login">
-                    Login
-                </a>
-            </li>
-        </ul>
-    </div>
+  <a class='navbar-brand' routerLink="/">Taz</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active" routerLinkActiveOptions='{ exact: true }'>
+        <a class="nav-link" routerLink="/">
+          Home
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticatedUser">
+        <a class="nav-link" routerLink="/fetch-data">
+          Fetch Data Example
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" *ngIf="isAdministrator">
+        <a class="nav-link" routerLink="/fake-entity-list">
+          Fake Entity Example
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/login">
+          Login
+        </a>
+      </li>
+    </ul>
+  </div>
 </nav>

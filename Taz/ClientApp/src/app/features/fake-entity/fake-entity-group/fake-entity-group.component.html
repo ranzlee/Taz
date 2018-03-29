@@ -1,23 +1,34 @@
 <div>
   <p>Add a new fake entity</p>
-  <input type="text" [(ngModel)]="newFakeEntity.name" placeholder="name">
-  <button (click)="add()">add</button>
-  <div *ngIf="fakeEntities && fakeEntities.length > 0">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Groups</th>
-          <th>ID</th>
-          <th>Parent ID</th>
-          <th>Root ID</th>
-          <th>Name</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody app-fake-entity-detail *ngFor="let fakeEntity of fakeEntities" [fakeEntity]="fakeEntity"></tbody>
-    </table>
+  <div class="row">
+    <div class="col-2">
+      <input class="form-control" type="text" [(ngModel)]="newFakeEntity.name" placeholder="name">
+    </div>
+    <div class="col">
+      <button class="btn btn-primary" (click)="add()">add</button>
+    </div>
   </div>
-  <div *ngIf="!fakeEntities || fakeEntities.length === 0">
-    There are no fake entities to display
+  <br/>
+  <div class="row">
+    <div class="col">
+      <div *ngIf="fakeEntities && fakeEntities.length > 0">
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Groups</th>
+              <th>ID</th>
+              <th>Parent ID</th>
+              <th>Root ID</th>
+              <th>Name</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody app-fake-entity-detail *ngFor="let fakeEntity of fakeEntities" [fakeEntity]="fakeEntity"></tbody>
+        </table>
+      </div>
+      <div *ngIf="!fakeEntities || fakeEntities.length === 0">
+        There are no fake entities to display
+      </div>
+    </div>
   </div>
 </div>

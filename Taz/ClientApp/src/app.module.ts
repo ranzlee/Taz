@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 // features
@@ -45,7 +44,6 @@ import { SecurityService } from './app/services/security/security-service';
       }
     }),
     FormsModule,
-    // FakeEntityModule,
     AppRoutingModule
   ],
   providers: [
@@ -57,4 +55,4 @@ import { SecurityService } from './app/services/security/security-service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

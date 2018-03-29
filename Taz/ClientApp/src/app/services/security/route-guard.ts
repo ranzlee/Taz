@@ -25,32 +25,27 @@ export class RouteGuard implements OnDestroy, CanActivate, CanLoad {
   }
 
   canLoad(route: Route): boolean | Observable<boolean> | Promise<boolean> {
-    if (this.securityService.loggedIn()) {
-      return linq
-        .from(this.policyAuthorizations)
-        .where(p => p.authorized)
-        .any(p => linq.from(p.routes).any(r => r === route.path));
-    } else {
-      this.securityService.removeToken();
-      this.router.navigateByUrl('/login');
-      return false;
-    }
+    return this.isAuthorized(route.path);
   }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    if (this.securityService.loggedIn()) {
-      return linq
-        .from(this.policyAuthorizations)
-        .where(p => p.authorized)
-        .any(p => linq.from(p.routes).any(r => r === route.routeConfig.path));
-    } else {
-      this.securityService.removeToken();
-      this.router.navigateByUrl('/login');
-      return false;
-    }
+    return this.isAuthorized(route.routeConfig.path);
   }
 
   ngOnDestroy(): void {
     this.securityService.unsubscribe(this);
+  }
+
+  isAuthorized(routePath: string): boolean {
+    if (this.securityService.loggedIn()) {
+      return linq
+        .from(this.policyAuthorizations)
+        .where(p => p.authorized)
+        .any(p => linq.from(p.routes).any(r => r === routePath));
+    } else {
+      this.securityService.removeToken();
+      this.router.navigateByUrl('/login');
+      return false;
+    }
   }
 }
