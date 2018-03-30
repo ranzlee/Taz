@@ -3,6 +3,7 @@ import { HttpService } from '../../../services/http/http.service';
 import { SecurityService } from '../../../services/security/security-service';
 import { PolicyAuthorization } from '../../../services/security/policyAuthorization';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -24,7 +25,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap
-      .switchMap((params: ParamMap) => params.get('redirect'))
+      .switchMap((params: ParamMap) => {
+        const p = params.get('redirect');
+        if (p != null) {
+          return p;
+        } else {
+          return new BehaviorSubject<string>('');
+        }
+      })
       .subscribe(redirectRoute => {
         this.redirectRoute += redirectRoute;
       });

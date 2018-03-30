@@ -9,6 +9,15 @@ export class SubscriberHelper {
   constructor() {}
 
   addSubscriber(subscriber: OnDestroy, subscription: Subscription) {
+    const subscriberMap = linq
+      .from(this.subscribers)
+      .where(x => x.subscriber === subscriber)
+      .firstOrDefault();
+    if (subscriberMap != null) {
+      throw new Error(
+        'subscriber is already registered - potential memory leak!'
+      );
+    }
     this.subscribers.push({
       subscriber: subscriber,
       subscription: subscription
