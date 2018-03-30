@@ -12,14 +12,24 @@ import { RouteGuard } from './app/services/security/route-guard';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [RouteGuard]
+  },
+  {
+    path: 'login/:redirect',
+    component: LoginComponent,
+    canActivate: [RouteGuard]
+  },
   {
     path: 'fetch-data',
     component: FetchDataComponent,
     canActivate: [RouteGuard],
     data: {
-      authorizedPolicies: [Taz.Model.Security.PolicyTypeEnum.AuthenticatedUser]
-    }
+      authorizedPolicies: [Taz.Model.Security.PolicyTypeEnum.AuthenticatedUser],
+      isDynamicMenuItem: true
+    } as RouteData
   },
   {
     path: 'fake-entity-list',
@@ -27,8 +37,9 @@ const appRoutes: Routes = [
       'app/features/fake-entity/fake-entity.module#FakeEntityModule',
     canLoad: [RouteGuard],
     data: {
-      authorizedPolicies: [Taz.Model.Security.PolicyTypeEnum.Administrator]
-    }
+      authorizedPolicies: [Taz.Model.Security.PolicyTypeEnum.Administrator],
+      isDynamicMenuItem: true
+    } as RouteData
   },
   { path: 'not-authorized', component: NotAuthorizedComponent },
   { path: '**', redirectTo: '' }
@@ -43,4 +54,4 @@ const appRoutes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

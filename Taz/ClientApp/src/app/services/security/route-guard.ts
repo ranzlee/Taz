@@ -6,10 +6,10 @@ import {
   CanLoad,
   Route
 } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { SecurityService } from './security-service';
 import { PolicyAuthorization } from './policyAuthorization';
 import * as linq from 'linq';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class RouteGuard implements OnDestroy, CanActivate, CanLoad {
@@ -36,15 +36,22 @@ export class RouteGuard implements OnDestroy, CanActivate, CanLoad {
     this.securityService.unsubscribe(this);
   }
 
-  isAuthorized(routePath: string): boolean {
+  private isAuthorized(routePath: string): boolean {
     if (this.securityService.loggedIn()) {
+      if (routePath.startsWith('login')) {
+        this.router.navigateByUrl('/');
+        return false;
+      }
       return linq
         .from(this.policyAuthorizations)
         .where(p => p.authorized)
         .any(p => linq.from(p.routes).any(r => r === routePath));
     } else {
+      if (routePath.startsWith('login')) {
+        return true;
+      }
       this.securityService.removeToken();
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/login/' + routePath);
       return false;
     }
   }

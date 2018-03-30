@@ -176,8 +176,7 @@ export class SecurityService
             )
             .where(r =>
               linq
-                .from(r.data
-                  .authorizedPolicies as Taz.Model.Security.PolicyTypeEnum[])
+                .from((r.data as RouteData).authorizedPolicies)
                 .any(p => p === securityPolicy.policyType)
             )
             .select(r => r.path)

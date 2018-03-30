@@ -1,21 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpService } from '../../../services/http/http.service';
 import { SecurityService } from '../../../services/security/security-service';
+import { PolicyAuthorization } from '../../../services/security/policyAuthorization';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginModel: Taz.Model.View.Account.ICredentials = {};
   registerModel: Taz.Model.View.Account.IRegistration = {};
 
+  private redirectRoute = '';
+
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private httpService: HttpService,
     private securityService: SecurityService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.route.paramMap
+      .switchMap((params: ParamMap) => params.get('redirect'))
+      .subscribe(redirectRoute => {
+        this.redirectRoute += redirectRoute;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.securityService.unsubscribe(this);
+  }
 
   register() {
     this.registerModel.email = 'randy.w.lee@gmail.com';
@@ -50,14 +67,13 @@ export class LoginComponent implements OnInit {
       result => {
         this.securityService.addToken(result.accessToken);
         console.log('Authentication Token = ' + result.accessToken);
+        this.securityService.subscribe(this, policyAuthorizations => {
+          this.router.navigateByUrl('/' + this.redirectRoute);
+        });
       },
       errors => {
         alert(errors);
       }
     );
-  }
-
-  logout() {
-    this.securityService.removeToken();
   }
 }
