@@ -35,10 +35,10 @@
     "jquery": "^3.3.1",
     "linq": "^3.0.9",
     "lodash": "^4.17.5",
-    "moment": "^2.21.0",
+    "moment": "^2.22.0",
     "popper.js": "^1.14.1",
     "rxjs": "^5.5.8",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.21"
   },
   "devDependencies": {
     "@angular/cli": "^1.7.3",
